@@ -1,4 +1,3 @@
-
 const indexView = (req, res) => {
     res.render("index", {
     } );
