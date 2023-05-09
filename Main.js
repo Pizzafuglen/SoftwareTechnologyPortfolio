@@ -9,7 +9,14 @@ app.listen(port, () => {            //server starts listening for any attempts f
     console.log(`Now listening on port ${port}`);
 });
 
+const {ConnectToDB} = require('./public/resources/DataGathering')
+const {GetData} = require('./public/resources/DataGathering')
 
+ConnectToDB();
+GetData();
+
+
+/*
 //database connection
 var mysql = require('mysql');
 
@@ -57,7 +64,7 @@ async function saveDataFromFetchCall(){
 }
 
 saveDataFromFetchCall();
-/*
+
 
 //This works:
 
