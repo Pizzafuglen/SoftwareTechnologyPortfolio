@@ -7,7 +7,7 @@ function ConnectToDB() {
     const con = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: '******'
+        password: '***'
     });
 
     con.connect(function(err) {
@@ -22,7 +22,7 @@ async function GetData() {
     const response = await fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=15');
     const jsonData = await response.json();
 
-    console.log('End');
+    console.log(jsonData[1]);
 }
 
 module.exports = {
