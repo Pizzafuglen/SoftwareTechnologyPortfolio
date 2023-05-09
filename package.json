@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "develop": "node main.js"
+    "develop": "node Main.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

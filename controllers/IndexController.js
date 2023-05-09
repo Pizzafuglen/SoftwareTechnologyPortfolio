@@ -1,5 +1,5 @@
 const indexView = (req, res) => {
-    res.render("index", {
+    res.render("IndexView", {
     } );
 }
 
