@@ -1,8 +1,7 @@
 const homeView = (req, res) => {
-    res.render("HomeView", {
-    } );
+    res.render("HomeView", {});
 }
 
-module.exports =  {
+module.exports = {
     homeView
 };

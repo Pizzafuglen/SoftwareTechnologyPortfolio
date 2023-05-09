@@ -9,5 +9,5 @@ const {homeView} = require('../controllers/HomeController');
 const router = express.Router();
 
 router.get('/index', indexView);
-router.get('/home',  homeView)
+router.get('/home', homeView)
 module.exports = router;
