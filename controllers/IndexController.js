@@ -1,8 +1,7 @@
 const indexView = (req, res) => {
-    res.render("IndexView", {
-    } );
+    res.render("IndexView", {});
 }
 
-module.exports =  {
+module.exports = {
     indexView
 };
