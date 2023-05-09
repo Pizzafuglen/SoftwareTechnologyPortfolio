@@ -9,7 +9,7 @@ app.listen(port, () => {            //server starts listening for any attempts f
     console.log(`Now listening on port ${port}`);
 });
 
-
+/*
 //database connection
 var mysql = require('mysql');
 
@@ -24,3 +24,4 @@ con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
+ */
