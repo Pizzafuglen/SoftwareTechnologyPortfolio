@@ -48,7 +48,7 @@ con.connect(function(err) {
             const insertData = (deal) => {
                 const sql = 'INSERT INTO deals (title, salePrice, normalPrice, savings) VALUES (?, ?, ?, ?)';
                 const values = [deal.title, deal.salePrice, deal.normalPrice, deal.savings];
-                connection.query(sql, values, (err, result) => {
+                con.query(sql, values, (err, result) => {
                     if (err) {
                         console.error('Error inserting data into MySQL:', err);
                         return;
