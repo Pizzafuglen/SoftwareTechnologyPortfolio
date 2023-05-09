@@ -47,7 +47,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'AdminAdmin123',
-    databases: 'steamgames'
+    database: 'steamgames'
 
 });
 
