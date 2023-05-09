@@ -1,6 +1,11 @@
+// Enable ESM syntax in a CommonJS module
+//require = require('esm')(module);
 
 
-const express = require('express'); //Import the express dependency
+//const express = require('express'); //Import the express dependency
+
+const express = require('express'); //import the express dependency
+
 const app = express();              //Instantiate an express app, the main work horse of this server
 const port = 5001;                  //Save the port number where your server will be listening
 
@@ -12,10 +17,17 @@ app.listen(port, () => {            //server starts listening for any attempts f
 });
 
 
-//database connection
-var mysql = require('mysql');
 
-var con = mysql.createConnection({
+
+
+
+
+
+
+//database connection
+var mysql2 = require('mysql');
+
+var con = mysql2.createConnection({
     host: "localhost",
     user: "root",
     password: "AdminAdmin123",
@@ -26,18 +38,65 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
+
+    fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&sortBy=savings&upperPrice=15')
+
+
+        .then(res => res.json())
+        //.then(data => console.log(data))
+        .then(data => {
+            const insertData = (deal) => {
+                const sql = 'INSERT INTO deals (title, salePrice, normalPrice, savings) VALUES (?, ?, ?, ?)';
+                const values = [deal.title, deal.salePrice, deal.normalPrice, deal.savings];
+                connection.query(sql, values, (err, result) => {
+                    if (err) {
+                        console.error('Error inserting data into MySQL:', err);
+                        return;
+                    }
+                    console.log(`Inserted ${result.affectedRows} row(s)`);
+                });
+            };
+
+            data.forEach(deal => insertData(deal));
+        })
+        .catch(err => {
+            console.error('Error fetching data from API:', err);
+        });
+
 });
 
+
+
+
+
+
+
+
+
+
+
 /*
-
-//This works:
-
-
 fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&sortBy=savings&upperPrice=15')
-
-
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => {
+        const insertData = (deal) => {
+            const sql = 'INSERT INTO deals (title, salePrice, normalPrice, savings) VALUES (?, ?, ?, ?)';
+            const values = [deal.title, deal.salePrice, deal.normalPrice, deal.savings];
+            connection.query(sql, values, (err, result) => {
+                if (err) {
+                    console.error('Error inserting data into MySQL:', err);
+                    return;
+                }
+                console.log(`Inserted ${result.affectedRows} row(s)`);
+            });
+        };
+
+        data.forEach(deal => insertData(deal));
+    })
+    .catch(err => {
+        console.error('Error fetching data from API:', err);
+    });
 
 
  */
+
