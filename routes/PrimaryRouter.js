@@ -1,6 +1,6 @@
 const express = require('express');
-const {indexView} = require('../controllers/indexController');
-const {homeView} = require('../controllers/homeController');
+const {indexView} = require('../controllers/IndexController');
+const {homeView} = require('../controllers/HomeController');
 const router = express.Router();
 router.get('/index', indexView);
 router.get('/',  homeView)
