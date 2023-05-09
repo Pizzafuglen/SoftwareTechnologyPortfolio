@@ -7,7 +7,7 @@ function ConnectToDB() {
     const con = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'Chri42d5'
+        password: '******'
     });
 
     con.connect(function(err) {
@@ -24,7 +24,6 @@ async function GetData() {
 
     console.log('End');
 }
-
 
 module.exports = {
     ConnectToDB,
