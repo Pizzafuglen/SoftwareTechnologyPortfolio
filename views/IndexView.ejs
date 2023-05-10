@@ -2,23 +2,22 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>MVC</title>
+    <title>Best steam deals</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 
+
 </head>
 <body>
 
 <canvas id="chart" width="400" height="400"></canvas>
-Index
-
 
 
     <script>
-        let xlabels_titles = [];
-        let dataSavings = [];
+        let xlabels_titles = ['Apex legends', 'Call of Duty', 'wallpaper engine', "Rocket League"];
+        let dataSavings = [90,50,90,95,80];
 
         chartIt();
 
@@ -29,7 +28,7 @@ Index
             const ctx = document.getElementById('chart');
 
             new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: xlabels_titles,
                     datasets: [{
@@ -48,6 +47,39 @@ Index
 
             });
         }
+
+        /*-----------------------------
+        Here is the try to get load data do fetch data from the database, and load it into the two arrays namely:
+
+        "xlabels_titles" and "dataSavings"
+
+        -----------
+
+
+
+async function loadData() {
+  const mysql = require('mysql2/promise');
+
+  const connection = await mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'AdminAdmin123',
+    database: 'steamgames'
+  });
+
+  const [rows, fields] = await connection.execute('SELECT * FROM steamgames2 LIMIT 1');
+
+  const data = Object.values(rows[0]);
+
+  xlabels_titles.push(data[0]); // Assuming the first column contains the x-axis labels
+  dataSavings.push(data[1]); // Assuming the second column contains the data values
+
+  await connection.end();
+}
+
+
+
+         */
 
 
 
