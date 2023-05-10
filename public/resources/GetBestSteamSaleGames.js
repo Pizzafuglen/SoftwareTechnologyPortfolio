@@ -1,13 +1,7 @@
-const mysql = require("mysql");
-const fetch = require("node-fetch");
+function GetSteamDeals() {
+    const mysql = require('mysql2');
 
-
-function getSteamDeals(){
-
-    const fetch = require('node-fetch');
-    const mysql = require('mysql');
-
-// create a connection to the MySQL database
+    // create a connection to the MySQL database
     const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
@@ -15,10 +9,11 @@ function getSteamDeals(){
         database: 'steamgames'
 
     });
+
     const clearSQL = 'TRUNCATE steamgames2'
 
     connection.query(clearSQL)
-// fetch data from the API
+    // fetch data from the API
     fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=15')
         .then(response => response.json())
         .then(data => {
@@ -42,5 +37,5 @@ function getSteamDeals(){
 }
 
 module.exports = {
-    getSteamDeals
+    getSteamDeals: GetSteamDeals
 };
