@@ -1,39 +1,19 @@
-let xlabels_titles = [];
-let dataSavings = [];
-
-chartIt();
-
-async function chartIt() {
-
-    await loadData();
-
-    const ctx = document.getElementById('chart');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: xlabels_titles,
-            datasets: [{
-                label: 'best deals on steam, in %-savings',
-                data: dataSavings,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-
-    });
-}
-
-
-
 async function loadData() {
+    const mysql = require('mysql2/promise');
 
+    const connection = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'AdminAdmin123',
+        database: 'steamgames'
+    });
 
+    const [rows, fields] = await connection.execute('SELECT * FROM steamgames2');
 
+    const data = Object.values(rows[0]);
+
+    xlabels_titles.push(data[0]); // Assuming the first column contains the x-axis labels
+    dataSavings.push(data[1]); // Assuming the second column contains the data values
+
+    await connection.end();
 }

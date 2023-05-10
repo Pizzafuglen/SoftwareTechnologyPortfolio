@@ -1,3 +1,7 @@
+
+
+
+
 function GetSteamDeals() {
     const mysql = require('mysql2');
 
@@ -37,5 +41,6 @@ function GetSteamDeals() {
 }
 
 module.exports = {
-    getSteamDeals: GetSteamDeals
+    getSteamDeals: GetSteamDeals,
+
 };
