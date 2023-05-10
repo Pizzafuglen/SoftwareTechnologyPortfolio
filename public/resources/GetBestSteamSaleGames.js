@@ -24,7 +24,8 @@ function GetSteamDeals() {
             // insert the data into the MySQL database
             data.forEach(item => {
                 const sql = `INSERT INTO steamgames2 (title, salePrice, normalPrice, savings) VALUES (?, ?, ?, ?)`;
-                const values = [item.title, item.salePrice, item.normalPrice, item.savings];
+                const values = [item.title, item.salePrice, item.normalPrice, item.savings]
+                //console.log(values[0])
                 connection.query(sql, values, (error, results, fields) => {
                     if (error) throw error;
                     console.log(`Inserted ${results.affectedRows} row(s)`);
