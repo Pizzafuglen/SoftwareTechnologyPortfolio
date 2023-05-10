@@ -39,3 +39,6 @@ function getSteamDeals(){
         });
 }
 
+module.exports = {
+    getSteamDeals
+};

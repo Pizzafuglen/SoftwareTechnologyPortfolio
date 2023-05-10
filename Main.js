@@ -4,7 +4,8 @@
 
 //const express = require('express'); //Import the express dependency
 
-const express = require('express'); //import the express dependency
+const express = require('express');
+const {getSteamDeals} = require("./public/resources/getBestSteamSaleGames"); //import the express dependency
 
 const app = express();              //Instantiate an express app, the main work horse of this server
 const port = 5001;                  //Save the port number where your server will be listening
@@ -17,10 +18,7 @@ app.listen(port, () => {            //server starts listening for any attempts f
 });
 
 
-
-
-
-
+getSteamDeals();
 
 
 
@@ -38,6 +36,8 @@ var con = mysql2.createConnection({
 
 
  */
+
+/*
 
 const fetch = require('node-fetch');
 const mysql = require('mysql');
@@ -76,7 +76,7 @@ fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=15')
         connection.end();
     });
 
-
+*/
 
 
 
@@ -111,4 +111,7 @@ fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&sortBy=savings&upperPr
 
 
  */
+
+
+
 
