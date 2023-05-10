@@ -51,6 +51,11 @@ const connection = mysql.createConnection({
 
 });
 
+const clearSQL = 'TRUNCATE steamgames2'
+
+connection.query(clearSQL)
+
+
 // fetch data from the API
 fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice=15')
     .then(response => response.json())
