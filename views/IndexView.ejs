@@ -4,8 +4,6 @@
     <meta charset='utf-8'>
     <title>MVC</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -13,55 +11,41 @@
 <canvas id="chart" width="400" height="400"></canvas>
 Index
 
-    <script>
+<script>
+    const xlabels_titles = [];
+    const dataSavings = [];
 
-        const xlabels_titles = [];
-        const dataSavings = [];
+    chartIt();
 
-        chartIt();
+    async function chartIt() {
 
-        async function chartIt() {
+        await loadData();
 
-            await loadData();
+        const ctx = document.getElementById('chart');
 
-            const ctx = document.getElementById('chart');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: xlabels_titles,
-                    datasets: [{
-                        label: 'best deals on steam, in %-savings',
-                        data: dataSavings,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: xlabels_titles,
+                datasets: [{
+                    label: 'best deals on steam, in %-savings',
+                    data: dataSavings,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
+            }
 
-            });
-        }
+        });
+    }
 
+    async function loadData() {
 
-        async function loadData() {
-
-
-
-
-
-        }
-
-
-
-
+    }
 </script>
-
-
-
 </body>
-
