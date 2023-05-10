@@ -37,6 +37,8 @@ function getSteamDeals(){
             // close the MySQL connection when done
             connection.end();
         });
+
+
 }
 
 module.exports = {
