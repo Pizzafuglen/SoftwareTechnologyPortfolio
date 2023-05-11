@@ -13,7 +13,7 @@ const {ConnectToDB} = require('./public/resources/DataGathering')
 const {GetData} = require('./public/resources/DataGathering')
 
 ConnectToDB();
-GetData();
+
 
 /*
 https://www.w3schools.com/nodejs/nodejs_mysql_create_db.asp potentially look into this

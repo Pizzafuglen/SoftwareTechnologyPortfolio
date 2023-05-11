@@ -1,15 +1,13 @@
 const mysql = require('mysql2');
-const {login} = require("passport/lib/http/request");
+const string_decoder = require("string_decoder");
+const {int32Read} = require("mysql/lib/protocol/Auth");
 
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Chri42d5'
+    password: 'Chri42d5',
+    database: 'mydb'
 });
-
-const tableName = 'gameOffers'
-
-
 /*
 The method so far calls the database, to ensure that there is a connection established
  */
@@ -29,16 +27,9 @@ function CreateDB() {
     });
 }
 function CreateGameOfferTable() {
-    const con = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'Chri42d5',
-        database: 'mydb'
-    });
-
     con.connect(function(err) {
         if (err) throw err;
-        const sql = 'CREATE TABLE gameOfferTable (name VARCHAR(255), address VARCHAR(255))';
+        const sql = 'CREATE TABLE gameOfferTable (gameName VARCHAR(255), storeID VARCHAR(255), dealPrice VARCHAR(255))';
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("Table created");
@@ -47,16 +38,9 @@ function CreateGameOfferTable() {
 }
 
 function CreateStoreTable() {
-    const con = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'Chri42d5',
-        database: 'mydb'
-    });
-
     con.connect(function(err) {
         if (err) throw err;
-        const sql = 'CREATE TABLE storeTable (name VARCHAR(255), address VARCHAR(255))';
+        const sql = 'CREATE TABLE storeTable (storeID VARCHAR(255), storeName VARCHAR(255))';
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("Table created");
@@ -65,13 +49,6 @@ function CreateStoreTable() {
 }
 
 function DropStoreTable() {
-    const con = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'Chri42d5',
-        database: 'mydb'
-    });
-
     con.connect(function(err) {
         if (err) throw err;
         const sql = 'DROP TABLE storeTable';
@@ -82,13 +59,6 @@ function DropStoreTable() {
     });
 }
 function DropGameOfferTable() {
-    const con = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'Chri42d5',
-        database: 'mydb'
-    });
-
     con.connect(function(err) {
         if (err) throw err;
         const sql = `DROP TABLE gameOfferTable`;
@@ -99,13 +69,6 @@ function DropGameOfferTable() {
     });
 }
 function ShowTables() {
-    const con = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'Chri42d5',
-        database: 'mydb'
-    });
-
     con.connect(function(err) {
         if (err) throw err;
         const sql = `SHOW TABLES`;
@@ -115,11 +78,55 @@ function ShowTables() {
         });
     });
 }
-
 function MigrateStoreTable() {
+    con.connect(async function (err) {
+        if (err) throw err;
 
+        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/stores');
+        const storeJson = await storeResponse.json();
+
+        for (const item of storeJson) {
+            const storeIDInput = item['storeID']
+            const storeNameInput = item['storeName']
+
+            const sql = `INSERT INTO storeTable (storeID, storeName) VALUES ('${storeIDInput}', '${storeNameInput}')`;
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("1 record inserted");
+            });
+        }
+    });
 }
 function MigrateGameOfferTable() {
+    con.connect(async function (err) {
+        if (err) throw err;
+
+        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
+        const storeJson = await storeResponse.json();
+
+        for (const item of storeJson['deals']) {
+            const storeIDInput = item['storeID']
+            const dealPriceInput = item['price']
+            const gameName = storeJson['info']['title']
+
+            console.log(gameName)
+            const sql = `INSERT INTO gameOfferTable (gameName, storeID, dealPrice) VALUES ('${gameName}', '${storeIDInput}','${dealPriceInput}')`;
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("1 record inserted");
+            });
+        }
+    });
+}
+
+async function GetGameOfferData() {
+    con.connect(function(err) {
+        if (err) throw err;
+        con.query("SELECT * FROM gameOfferTable", function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+        })
+    });
 
 }
 
@@ -127,13 +134,10 @@ function MigrateGameOfferTable() {
 The method so far calls the API, and then posts the response to the log (right now it only post 'end')
  */
 async function GetData() {
-    const response = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
-    const jsonData = await response.json();
+    const gameResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
+    const gameJson = await gameResponse.json();
 
-    const dealsParsed = jsonData['deals'];
-    for (const item of dealsParsed) {
-        console.log(item['price'])
-    }
+    return gameJson['deals']
 }
 
 module.exports = {
@@ -144,5 +148,7 @@ module.exports = {
     DropStoreTable,
     DropGameOfferTable,
     CreateStoreTable,
-    ShowTables
+    ShowTables,
+    MigrateStoreTable,
+    MigrateGameOfferTable
 };
