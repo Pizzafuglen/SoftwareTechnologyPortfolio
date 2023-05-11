@@ -24,8 +24,6 @@ const{DropStoreTable} = require('../public/resources/DataGathering')
 const{ShowTables} = require('../public/resources/DataGathering')
 const{MigrateStoreTable} = require('../public/resources/DataGathering')
 const{MigrateGameOfferTable} = require('../public/resources/DataGathering')
-const{GetGameOfferData} = require('../public/resources/DataGathering')
-const{GetShopData} = require('../public/resources/DataGathering')
 
 const router = express.Router();
 
@@ -47,6 +45,12 @@ router.get('/dropGameOfferTable', function (req, res) {
     res.redirect('back')
     DropGameOfferTable()
 })
+
+router.get('/dropTables', function (req, res) {
+    res.redirect('back')
+    DropStoreTable()
+    DropGameOfferTable()
+})
 router.get('/createDB', function (req, res){
     res.redirect('back')
     CreateDB()
@@ -63,6 +67,14 @@ router.get('/migrateGameOfferTable', function (req, res) {
     res.redirect('back')
     MigrateGameOfferTable()
 })
+router.get('/completeMigration', function (req, res) {
+    res.redirect('back')
+    CreateStoreTable()
+    CreateGameOfferTable()
+    MigrateStoreTable()
+    MigrateGameOfferTable()
+})
+
 router.get('/getGameOfferTable', function (req, res){
     con.query("SELECT * FROM gameOfferTable", (err, data) => {
         res.send(data)

@@ -8,17 +8,19 @@ const con = mysql.createConnection({
     password: 'Chri42d5',
     database: 'mydb'
 });
+
 /*
 The method so far calls the database, to ensure that there is a connection established
  */
 function ConnectToDB() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         console.log('Connected!');
     });
 }
+
 function CreateDB() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         con.query("CREATE DATABASE mydb", function (err, result) {
             if (err) throw err;
@@ -26,8 +28,9 @@ function CreateDB() {
         });
     });
 }
+
 function CreateGameOfferTable() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         const sql = 'CREATE TABLE gameOfferTable (gameName VARCHAR(255), storeID VARCHAR(255), dealPrice VARCHAR(255))';
         con.query(sql, function (err, result) {
@@ -38,7 +41,7 @@ function CreateGameOfferTable() {
 }
 
 function CreateStoreTable() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         const sql = 'CREATE TABLE storeTable (storeID VARCHAR(255), storeName VARCHAR(255))';
         con.query(sql, function (err, result) {
@@ -49,7 +52,7 @@ function CreateStoreTable() {
 }
 
 function DropStoreTable() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         const sql = 'DROP TABLE storeTable';
         con.query(sql, function (err, result) {
@@ -58,8 +61,9 @@ function DropStoreTable() {
         });
     });
 }
+
 function DropGameOfferTable() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         const sql = `DROP TABLE gameOfferTable`;
         con.query(sql, function (err, result) {
@@ -68,8 +72,9 @@ function DropGameOfferTable() {
         });
     });
 }
+
 function ShowTables() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         const sql = `SHOW TABLES`;
         con.query(sql, function (err, result) {
@@ -78,6 +83,7 @@ function ShowTables() {
         });
     });
 }
+
 function MigrateStoreTable() {
     con.connect(async function (err) {
         if (err) throw err;
@@ -85,42 +91,53 @@ function MigrateStoreTable() {
         const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/stores');
         const storeJson = await storeResponse.json();
 
+        let counter = 0;
+
         for (const item of storeJson) {
             const storeIDInput = item['storeID']
             const storeNameInput = item['storeName']
 
+            counter += 1;
+
             const sql = `INSERT INTO storeTable (storeID, storeName) VALUES ('${storeIDInput}', '${storeNameInput}')`;
             con.query(sql, function (err, result) {
                 if (err) throw err;
-                console.log("1 record inserted");
             });
         }
+
+        console.log("Inserted: " + counter + " records into storeTable")
     });
 }
+
 function MigrateGameOfferTable() {
     con.connect(async function (err) {
         if (err) throw err;
 
-        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
+        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=396');
         const storeJson = await storeResponse.json();
+
+        let counter = 0;
 
         for (const item of storeJson['deals']) {
             const storeIDInput = item['storeID']
             const dealPriceInput = item['price']
             const gameName = storeJson['info']['title']
 
-            console.log(gameName)
+            counter += 1;
+
             const sql = `INSERT INTO gameOfferTable (gameName, storeID, dealPrice) VALUES ('${gameName}', '${storeIDInput}','${dealPriceInput}')`;
             con.query(sql, function (err, result) {
                 if (err) throw err;
-                console.log("1 record inserted");
+
             });
         }
+
+        console.log("Inserted: " + counter + " records into gameOfferTable")
     });
 }
 
 async function GetGameOfferData() {
-    con.connect(function(err) {
+    con.connect(function (err) {
         if (err) throw err;
         con.query("SELECT * FROM gameOfferTable", function (err, result, fields) {
             if (err) throw err;
