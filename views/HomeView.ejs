@@ -29,7 +29,7 @@
                 }]
             }
         });
-    }
+    } // Here we create and draw the graph displayed on the index view
 
     async function getData() {
         const gameOfferResponse = await fetch('/getGameOfferTable')
@@ -39,7 +39,7 @@
             storeIDLabel.push(item.storeID)
             gameDealData.push(item.dealPrice)
         }
-    }
+    } // Here we get the data for the graphing above
 </script>
 </body>
 </html>

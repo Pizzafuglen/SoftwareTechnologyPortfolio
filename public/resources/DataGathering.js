@@ -1,25 +1,26 @@
+/*
+The job of the DataGathering is to ensure the corresponding methods for the URL calls
+ */
 const mysql = require('mysql2');
-const string_decoder = require("string_decoder");
-const {int32Read} = require("mysql/lib/protocol/Auth");
-
 const con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'Chri42d5',
+    user: '***',
+    password: '***',
     database: 'mydb'
-});
-
-/*
-The method so far calls the database, to ensure that there is a connection established
- */
+}); // Creating a connection object to used when accessing the database (you need to have created the specific database in order to use this
 function ConnectToDB() {
     con.connect(function (err) {
         if (err) throw err;
         console.log('Connected!');
     });
-}
-
+} // This method is responsible for testing the connection to mysql
 function CreateDB() {
+    const con = mysql.createConnection({
+        host: 'localhost',
+        user: '***',
+        password: '***'
+    });
+
     con.connect(function (err) {
         if (err) throw err;
         con.query("CREATE DATABASE mydb", function (err, result) {
@@ -27,7 +28,7 @@ function CreateDB() {
             console.log("Database created");
         });
     });
-}
+} // This method is responsible for creating a database, with a specific name (in this case mydb)
 
 function CreateGameOfferTable() {
     con.connect(function (err) {
@@ -38,7 +39,7 @@ function CreateGameOfferTable() {
             console.log("Table created");
         });
     });
-}
+} // This method is responsible for creating the gameOfferTable table
 
 function CreateStoreTable() {
     con.connect(function (err) {
@@ -49,7 +50,7 @@ function CreateStoreTable() {
             console.log("Table created");
         });
     });
-}
+} // This method is responsible for creating the storeTable table
 
 function DropStoreTable() {
     con.connect(function (err) {
@@ -60,7 +61,7 @@ function DropStoreTable() {
             console.log("Table deleted");
         });
     });
-}
+} // This method is responsible for dropping the storeTable table
 
 function DropGameOfferTable() {
     con.connect(function (err) {
@@ -71,7 +72,7 @@ function DropGameOfferTable() {
             console.log("Table deleted");
         });
     });
-}
+} // This method is responsible for dropping the gameOfferTable table
 
 function ShowTables() {
     con.connect(function (err) {
@@ -82,7 +83,7 @@ function ShowTables() {
             console.log(result)
         });
     });
-}
+} // This method is responsible for showing the tables currently in the database
 
 function MigrateStoreTable() {
     con.connect(async function (err) {
@@ -107,13 +108,13 @@ function MigrateStoreTable() {
 
         console.log("Inserted: " + counter + " records into storeTable")
     });
-}
+} // This method is responsible for migrating data from the API call to the storeTable
 
 function MigrateGameOfferTable() {
     con.connect(async function (err) {
         if (err) throw err;
 
-        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=396');
+        const storeResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
         const storeJson = await storeResponse.json();
 
         let counter = 0;
@@ -134,32 +135,10 @@ function MigrateGameOfferTable() {
 
         console.log("Inserted: " + counter + " records into gameOfferTable")
     });
-}
-
-async function GetGameOfferData() {
-    con.connect(function (err) {
-        if (err) throw err;
-        con.query("SELECT * FROM gameOfferTable", function (err, result, fields) {
-            if (err) throw err;
-            console.log(result);
-        })
-    });
-
-}
-
-/*
-The method so far calls the API, and then posts the response to the log (right now it only post 'end')
- */
-async function GetData() {
-    const gameResponse = await fetch('https://www.cheapshark.com/api/1.0/games?id=612');
-    const gameJson = await gameResponse.json();
-
-    return gameJson['deals']
-}
+}// This method is responsible for migrating data from the API call to the gameOfferTable
 
 module.exports = {
     ConnectToDB,
-    GetData,
     CreateDB,
     CreateGameOfferTable,
     DropStoreTable,
@@ -168,4 +147,4 @@ module.exports = {
     ShowTables,
     MigrateStoreTable,
     MigrateGameOfferTable
-};
+}; // Here we export all the above methods
