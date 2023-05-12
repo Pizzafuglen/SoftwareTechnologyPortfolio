@@ -1,39 +1,45 @@
-<!DOCTYPE html>
-<html>
+<html lang="EN">
 <head>
     <meta charset='utf-8'>
     <title>MVC</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 </head>
 <body>
-Home
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id='myChart' width='200' height='200'></canvas>
+<a href="/index">toIndex</a>
 <script>
     createGraph();
+    getData();
+
+    const storeIDLabel = []
+    const gameDealData = []
 
     async function createGraph() {
-        const ctx = document.getElementById('myChart');
+        await getData()
+        const ctx = document.getElementById('myChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: storeIDLabel,
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: 'Best game deals',
+                    data: gameDealData,
                     borderWidth: 1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
             }
         });
-    }
+    } // Here we create and draw the graph displayed on the index view
+
+    async function getData() {
+        const gameOfferResponse = await fetch('/getGameOfferTable')
+        const gameOfferData = await gameOfferResponse.json()
+
+        for (const item of gameOfferData) {
+            storeIDLabel.push(item.storeID)
+            gameDealData.push(item.dealPrice)
+        }
+    } // Here we get the data for the graphing above
 </script>
-
-
 </body>
+</html>
